@@ -107,7 +107,7 @@ In the previous excerpt it is displayed the execution of one of the forks for th
 
 Benchmark                                                                                                                                                                                                                             (command)  Mode  Cnt  Score   Error  Units
 ...
-Execution.execute                                                                                                 other_solutions/barber          avgt   50  0.860 ± 0.010   s/op
+Execution.execute                                                                                                                                                                                                     other_solutions/barber     avgt   50  0.860 ± 0.010   s/op
 Execution.execute                                                                                                 java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.barbershop.Barbershop false 1000  avgt   50  0.930 ± 0.008   s/op
 ```
 
@@ -504,7 +504,7 @@ The results are summarized in the following table:
 
 |  | Correctness | Comprehensibility | Performance |
 |---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------|
-| Starvation | Starvation is the biggest problem for this code. I was trivial to find an scenario where a single group gained control of the critial section and prevented the other group from entering. The major problem is that even if the critial section is almost empty, the entrance of a new element of the same group regains control of it. | The code is not trivial and it takes some effort to understand the reasoning behind the synchronization blocks introduced. It is not a clean solution and it is less readable because of the fact that threads in the wait state may me waken up by the scheduler even if the timing is not right, thus having to write extra code to handle this particular case. | The Go code was faster for about... |
+| Starvation | Starvation is the biggest problem for this code. It was trivial to find an scenario where a single group gained control of the critial section and prevented the other group from entering. The major problem is that even if the critial section is almost empty, the entrance of a new element of the same group regains control of it. | The code is not trivial and it takes some effort to understand the reasoning behind the synchronization blocks introduced. It is not a clean solution and it is less readable because of the fact that threads in the wait state may me waken up by the scheduler even if the timing is not right, thus having to write extra code to handle this particular case. | The Go code was faster for about... |
 | No starvation | The code was thoroughly tested and bugs were attended. The program was executed with randomized waits and creation of male and female groups without displaying signs of race conditions or deadlocks. | The code is more complex than the solution where starvation is allowed, since extra mechanisms to ensure that both groups were allowed to enter the critical section. Also, it became difficult to ensure high cohesion as the synchronized blocks require from a common lock. | TheThe Go code was faster for about... |
 
 #### **6. Concurrent Queue**
@@ -515,7 +515,7 @@ Queues are data structures where the first element added (enqueued) should be th
 A lock-free implementation obtained from [a forum][29] was adapted and compared agains built-in implementations:
 
 1. [ConcurrentLinkedQueue][31], which uses lock-free operations. After exploring the Java's source code it was found that it uses native, lock-free methods such as `public final native boolean compareAndSwapObject(Object var1, long var2, Object var4, Object var5);`.
-2. [LinkedBlockingQueue][32], which uses explicit locks to coordinate the operations. One example of the locks is as follows:
+2. [LinkedBlockingQueue][34], which uses explicit locks to coordinate the operations. One example of the locks is as follows:
 
 ```Java
 private void signalNotFull() {
@@ -537,33 +537,136 @@ Finally, the analysis was conducted with results obtained while executing 100, 1
 Concurrent data structures are the building pillars of large problems. A queue may be used to keep track of requests performed to a web service and to ensure that each request is serviced without altering the order in which they arrived. For example, this may be useful in submissions to a competing platform for programmers, where the first submission is given a higher mark.
 
 ##### **Raw Results**
-The relevant portions of the log are as follows:
+The relevant portions of the log are as follows (all are for 1000 operations):
 
 ```
-Missing the code
+2018-10-11 14:13:24,285 ca.uvic.concurrency.gmmurguia.execution.Execution.execute-jmh-worker-1 DEBUG Shutdown hook enabled. Registering a new one.
+2018-10-11 14:13:24,286 ca.uvic.concurrency.gmmurguia.execution.Execution.execute-jmh-worker-1 DEBUG LoggerContext[name=5c647e05, org.apache.logging.log4j.core.LoggerContext@6c4af7db] started OK.
+0.795 s/op
+Iteration   2: 0.796 s/op
+Iteration   3: 0.793 s/op
+Iteration   4: 0.794 s/op
+Iteration   5: 0.799 s/op
+Iteration   6: 0.802 s/op
+Iteration   7: 0.807 s/op
+Iteration   8: 0.787 s/op
+Iteration   9: 0.779 s/op
+Iteration  10: 0.818 s/op
+2018-10-11 14:13:40,246 pool-2-thread-1 DEBUG Stopping LoggerContext[name=5c647e05, org.apache.logging.log4j.core.LoggerContext@6c4af7db]
+2018-10-11 14:13:40,246 pool-2-thread-1 DEBUG Stopping LoggerContext[name=5c647e05, org.apache.logging.log4j.core.LoggerContext@6c4af7db]...
+
+# Run progress: 67.78% complete, ETA 00:07:44
+# Fork: 2 of 5
 ```
 
-In the previous excerpt it is displayed the execution of one of the forks for the C solution, and the partial metrics obtained.
+In the previous excerpt it is displayed the execution of one of the forks for the lock-free implementation adapted from the online forum, and the partial metrics obtained.
 
 ```
-Missing the code
+2018-10-11 14:14:47,916 ca.uvic.concurrency.gmmurguia.execution.Execution.execute-jmh-worker-1 DEBUG Shutdown hook enabled. Registering a new one.
+2018-10-11 14:14:47,916 ca.uvic.concurrency.gmmurguia.execution.Execution.execute-jmh-worker-1 DEBUG LoggerContext[name=5c647e05, org.apache.logging.log4j.core.LoggerContext@6c4af7db] started OK.
+2.430 s/op
+Iteration   2: 2.334 s/op
+Iteration   3: 2.225 s/op
+Iteration   4: 2.232 s/op
+Iteration   5: 2.249 s/op
+Iteration   6: 2.217 s/op
+Iteration   7: 2.302 s/op
+Iteration   8: 2.165 s/op
+Iteration   9: 2.246 s/op
+Iteration  10: 2.300 s/op
+2018-10-11 14:15:10,634 pool-2-thread-1 DEBUG Stopping LoggerContext[name=5c647e05, org.apache.logging.log4j.core.LoggerContext@6c4af7db]
+2018-10-11 14:15:10,635 pool-2-thread-1 DEBUG Stopping LoggerContext[name=5c647e05, org.apache.logging.log4j.core.LoggerContext@6c4af7db]...
+
+# Run progress: 73.33% complete, ETA 00:06:28
+# Fork: 2 of 5
 ```
 
-In the previous excerpt it is displayed the execution of one of the forks for the Java solution, and the partial metrics obtained.
+In the previous excerpt it is displayed the execution of one of the forks for the ConcurrentLinkedQueue implementation, and the partial metrics obtained.
 
 ```
-Missing the code
+2018-10-11 14:16:44,603 ca.uvic.concurrency.gmmurguia.execution.Execution.execute-jmh-worker-1 DEBUG Shutdown hook enabled. Registering a new one.
+2018-10-11 14:16:44,604 ca.uvic.concurrency.gmmurguia.execution.Execution.execute-jmh-worker-1 DEBUG LoggerContext[name=5c647e05, org.apache.logging.log4j.core.LoggerContext@6c4af7db] started OK.
+2.206 s/op
+Iteration   2: 2.158 s/op
+Iteration   3: 2.219 s/op
+Iteration   4: 2.290 s/op
+Iteration   5: 2.209 s/op
+Iteration   6: 2.126 s/op
+Iteration   7: 2.246 s/op
+Iteration   8: 2.213 s/op
+Iteration   9: 2.229 s/op
+Iteration  10: 2.252 s/op
+2018-10-11 14:17:06,773 pool-2-thread-1 DEBUG Stopping LoggerContext[name=5c647e05, org.apache.logging.log4j.core.LoggerContext@6c4af7db]
+2018-10-11 14:17:06,774 pool-2-thread-1 DEBUG Stopping LoggerContext[name=5c647e05, org.apache.logging.log4j.core.LoggerContext@6c4af7db]...
+
+# Run progress: 78.89% complete, ETA 00:05:16
+# Fork: 2 of 5
 ```
 
-This log excerpt contains the summary data for this problem.
+In the previous excerpt it is displayed the execution of one of the forks for the LinkedBlockingQueue implementation, and the partial metrics obtained.
 
-![Missing graph][33]
+```
+2018-10-11 14:18:39,201 ca.uvic.concurrency.gmmurguia.execution.Execution.execute-jmh-worker-1 DEBUG Shutdown hook enabled. Registering a new one.
+2018-10-11 14:18:39,202 ca.uvic.concurrency.gmmurguia.execution.Execution.execute-jmh-worker-1 DEBUG LoggerContext[name=5c647e05, org.apache.logging.log4j.core.LoggerContext@6c4af7db] started OK.
+0.693 s/op
+Iteration   2: 0.693 s/op
+Iteration   3: 0.714 s/op
+Iteration   4: 0.707 s/op
+Iteration   5: 0.713 s/op
+Iteration   6: 0.692 s/op
+Iteration   7: 0.710 s/op
+Iteration   8: 0.692 s/op
+Iteration   9: 0.708 s/op
+Iteration  10: 0.695 s/op
+2018-10-11 14:18:53,258 pool-2-thread-1 DEBUG Stopping LoggerContext[name=5c647e05, org.apache.logging.log4j.core.LoggerContext@6c4af7db]
+2018-10-11 14:18:53,258 pool-2-thread-1 DEBUG Stopping LoggerContext[name=5c647e05, org.apache.logging.log4j.core.LoggerContext@6c4af7db]...
 
-The previous graph represents the CPU usage per core during the execution of the C program. 
+# Run progress: 84.44% complete, ETA 00:03:57
+# Fork: 2 of 5
+```
 
-![Missing graph][34]
+In the previous excerpt it is displayed the execution of one of the forks for the LinkedList implementation, and the partial metrics obtained.
 
-The previous graph represents the CPU usage per core during the execution of the Java program.
+```
+Result "ca.uvic.concurrency.gmmurguia.execution.Execution.execute":
+  0.707 ±(99.9%) 0.005 s/op [Average]
+  (min, avg, max) = (0.681, 0.707, 0.736), stdev = 0.011
+  CI (99.9%): [0.702, 0.713] (assumes normal distribution)
+
+
+# Run complete. Total time: 00:25:17
+
+Benchmark                                                                                                                                                                                                                             (command)  Mode  Cnt  Score   Error  Units
+...
+Execution.execute                                                                                          java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.concurrentqueue.QueueTest lock-free 100  avgt   50  0.730 ± 0.006   s/op
+Execution.execute                                                                                         java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.concurrentqueue.QueueTest concurrent 100  avgt   50  0.778 ± 0.007   s/op
+Execution.execute                                                                                           java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.concurrentqueue.QueueTest blocking 100  avgt   50  0.777 ± 0.008   s/op
+Execution.execute                                                                                               java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.concurrentqueue.QueueTest sync 100  avgt   50  0.704 ± 0.005   s/op
+Execution.execute                                                                                         java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.concurrentqueue.QueueTest lock-free 1000  avgt   50  0.794 ± 0.006   s/op
+Execution.execute                                                                                        java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.concurrentqueue.QueueTest concurrent 1000  avgt   50  2.250 ± 0.031   s/op
+Execution.execute                                                                                          java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.concurrentqueue.QueueTest blocking 1000  avgt   50  2.208 ± 0.030   s/op
+Execution.execute                                                                                              java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.concurrentqueue.QueueTest sync 1000  avgt   50  0.703 ± 0.006   s/op
+Execution.execute                                                                                        java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.concurrentqueue.QueueTest lock-free 10000  avgt   50  0.880 ± 0.010   s/op
+Execution.execute                                                                                             java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.concurrentqueue.QueueTest sync 10000  avgt   50  0.707 ± 0.005   s/op
+```
+
+This log excerpt contains the summary data for this problem for 100, 1000 and 10000 executions.
+
+![Missing graph][35]
+
+The previous graph represents the CPU usage per core during the execution of the non-blocking program. 
+
+![Missing graph][36]
+
+The previous graph represents the CPU usage per core during the execution of the ConcurrentLinkedQueue program.
+
+![Missing graph][37]
+
+The previous graph represents the CPU usage per core during the execution of the LinkedBlockingQueue program. 
+
+![Missing graph][38]
+
+The previous graph represents the CPU usage per core during the execution of the LinkedList program.
 
 ##### **Analysis results**
 The results are summarized in the following table:
@@ -630,3 +733,8 @@ Downey,  Allen B. 2014. The Little Book of Semaphores: Createspace Independent P
 [31]: https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentLinkedQueue.html
 [32]: https://github.com/sephiroth2029/concurrency-a1/blob/master/src/main/resources/nmon_results/barbershop/java/charts/pantera/CPU_Balance.png?raw=true
 [33]: https://github.com/sephiroth2029/concurrency-a1/blob/master/src/main/resources/nmon_results/
+[34]: https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/LinkedBlockingQueue.html
+[35]: https://github.com/sephiroth2029/concurrency-a1/blob/master/src/main/resources/nmon_results/concurrent_queue_1000/java/lock-free/charts/pantera/CPU_Balance.png?raw=true
+[36]: https://github.com/sephiroth2029/concurrency-a1/blob/master/src/main/resources/nmon_results/concurrent_queue_1000/java/concurrent/charts/pantera/CPU_Balance.png?raw=true
+[37]: https://github.com/sephiroth2029/concurrency-a1/blob/master/src/main/resources/nmon_results/concurrent_queue_1000/java/blocking/charts/pantera/CPU_Balance.png?raw=true
+[38]: https://github.com/sephiroth2029/concurrency-a1/blob/master/src/main/resources/nmon_results/concurrent_queue_1000/java/sync/charts/pantera/CPU_Balance.png?raw=true
