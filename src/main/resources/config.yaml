@@ -1,0 +1,94 @@
+problems:
+  -
+    name: prds_cons
+    implementations:
+      -
+        lang: java
+        command: java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.prodscons.ProducersConsumers false 1000
+      -
+        lang: go
+        command: go run other_solutions/prod_cons.go 1000
+  -
+      name: readers_writers
+      implementations:
+      -
+          lang: java
+          command: java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.readerswriters.ReadersWriters false 1000
+      -
+          lang: go
+          command: go run other_solutions/readswrites/6713e855b431a0c067afea4b74cbf504/ch.go other_solutions/readswrites/6713e855b431a0c067afea4b74cbf504/chan_holder.go other_solutions/readswrites/6713e855b431a0c067afea4b74cbf504/holder.go
+  -
+      name: unisex_bathroom
+      implementations:
+      -
+          lang: java
+          command: java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.unisexbathroom.UnisexBathroom false 1000
+      -
+          lang: java
+          command: java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.unisexbathroom.UnisexBathroomStarving false 1000
+      -
+          lang: java
+          command: java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.unisexbathroom.UnisexBathroomStarvingLess false 1000
+  -
+      name: barbershop
+      implementations:
+      -
+          lang: java
+          command: java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.barbershop.Barbershop false 1000
+#      -
+#          lang: c
+#          command: other_solutions/barber
+#  -
+#      name: santa_claus
+#      implementations:
+#      -
+#          lang: java
+#          command: java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.santaclaus.SantaClaus false 100
+#      -
+#          lang: c
+#          command: other_solutions/Santa-Claus-Problem/mrs.claus
+  -
+      name: concurrent_queue_100
+      implementations:
+      -
+          lang: java
+          command: java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.concurrentqueue.QueueTest lock-free 100
+      -
+          lang: java
+          command: java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.concurrentqueue.QueueTest concurrent 100
+      -
+          lang: java
+          command: java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.concurrentqueue.QueueTest blocking 100
+      -
+          lang: java
+          command: java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.concurrentqueue.QueueTest sync 100
+  -
+      name: concurrent_queue_1000
+      implementations:
+      -
+          lang: java
+          command: java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.concurrentqueue.QueueTest lock-free 1000
+      -
+          lang: java
+          command: java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.concurrentqueue.QueueTest concurrent 1000
+      -
+          lang: java
+          command: java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.concurrentqueue.QueueTest blocking 1000
+      -
+          lang: java
+          command: java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.concurrentqueue.QueueTest sync 1000
+  -
+      name: concurrent_queue_10000
+      implementations:
+      -
+          lang: java
+          command: java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.concurrentqueue.QueueTest lock-free 10000
+#      -
+#          lang: java
+#          command: java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.concurrentqueue.QueueTest concurrent 10000
+#      -
+#          lang: java
+#          command: java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.concurrentqueue.QueueTest blocking 10000
+      -
+          lang: java
+          command: java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.concurrentqueue.QueueTest sync 10000

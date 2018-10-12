@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Configuration status="debug">
+    <Appenders>
+        <Console name="Console-Appender" target="SYSTEM_OUT">
+            <PatternLayout>
+                <pattern>
+                    %msg%n
+                </pattern>>
+            </PatternLayout>
+        </Console>
+        <RollingRandomAccessFile name="Executor-Appender"
+                                 fileName="logs/execution.log"
+                                 filePattern="archive/logs/execution.log.%d{yyyy-MM-dd-hh-mm}.gz">
+            <PatternLayout>
+                <pattern>
+                    %d{yyyy-MM-dd HH:mm:ss} %msg%n
+                </pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+            </Policies>
+        </RollingRandomAccessFile>
+        <RollingRandomAccessFile name="Problem-Appender"
+                                 fileName="logs/problem.log"
+                                 filePattern="archive/logs/problem.log.%d{yyyy-MM-dd-hh-mm}.gz">
+            <PatternLayout>
+                <pattern>
+                    %d{yyyy-MM-dd HH:mm:ss} %msg%n
+                </pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+            </Policies>
+        </RollingRandomAccessFile>
+    </Appenders>
+    <Loggers>
+        <AsyncLogger name="ca.uvic.concurrency.gmmurguia.execution.Execution" level="info">
+            <AppenderRef ref="Executor-Appender"/>
+        </AsyncLogger>
+        <AsyncLogger name="ca.uvic.concurrency.gmmurguia.a1" level="info">
+            <AppenderRef ref="Problem-Appender"/>
+        </AsyncLogger>
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>

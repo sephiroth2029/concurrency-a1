@@ -1,0 +1,1 @@
+java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.concurrentqueue.QueueTest lock-free 100
