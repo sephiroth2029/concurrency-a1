@@ -33,7 +33,7 @@ The programs were executed in two ways:
 
 In this section the problems will be discussed, together with the results. It is important to mention that most of the problems were analyzed differently. The detail will be explained at the beginning of each problem.
 
-#### **Barbershop**
+#### **1. Barbershop**
 ##### **Description**
 ```
 A barbershop consists of a waiting room with n chairs, and the
@@ -107,7 +107,7 @@ In the previous excerpt it is displayed the execution of one of the forks for th
 
 Benchmark                                                                                                                                                                                                                             (command)  Mode  Cnt  Score   Error  Units
 ...
-other_solutions/barber                                   avgt   50  0.860 ± 0.010   s/op
+other_solutions/barber                                                                                                                                                                                                                           avgt   50  0.860 ± 0.010   s/op
 Execution.execute                                                                                                 java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.barbershop.Barbershop false 1000  avgt   50  0.930 ± 0.008   s/op
 ```
 
@@ -117,7 +117,7 @@ This log excerpt contains the summary data for this problem.
 
 The previous graph represents the CPU usage per core during the execution of the C program. 
 
-![Missing graph][7]
+![Missing graph][32]
 
 The previous graph represents the CPU usage per core during the execution of the Java program.
 
@@ -131,7 +131,7 @@ The results are summarized in the following table:
 
 For this problem, it can be concluded that Java offers a straightforward mechanism to synchonize the customers and the barber. Still, if performance is the main objective, then C and mutexes are a compelling alternative.
 
-#### **Producers-consumers**
+#### **2. Producers-consumers**
 ##### **Description**
 ```
 Producers create items of some kind and add them to a data structure; consumers
@@ -154,30 +154,72 @@ As the Downey described, this can be very relevant in an event-driven environmen
 The relevant portions of the log are as follows:
 
 ```
-Missing the code
+2018-10-11 13:58:45,152 ca.uvic.concurrency.gmmurguia.execution.Execution.execute-jmh-worker-1 DEBUG Shutdown hook enabled. Registering a new one.
+2018-10-11 13:58:45,153 ca.uvic.concurrency.gmmurguia.execution.Execution.execute-jmh-worker-1 DEBUG LoggerContext[name=5c647e05, org.apache.logging.log4j.core.LoggerContext@6c4af7db] started OK.
+0.375 s/op
+Iteration   2: 0.182 s/op
+Iteration   3: 0.178 s/op
+Iteration   4: 0.178 s/op
+Iteration   5: 0.182 s/op
+Iteration   6: 0.181 s/op
+Iteration   7: 0.176 s/op
+Iteration   8: 0.181 s/op
+Iteration   9: 0.181 s/op
+Iteration  10: 0.177 s/op
+2018-10-11 13:58:56,000 pool-2-thread-1 DEBUG Stopping LoggerContext[name=5c647e05, org.apache.logging.log4j.core.LoggerContext@6c4af7db]
+2018-10-11 13:58:56,000 pool-2-thread-1 DEBUG Stopping LoggerContext[name=5c647e05, org.apache.logging.log4j.core.LoggerContext@6c4af7db]...
+
+# Run progress: 6.67% complete, ETA 00:21:48
+# Fork: 2 of 5
 ```
 
 In the previous excerpt it is displayed the execution of one of the forks for the Go solution, and the partial metrics obtained.
 
 ```
-Missing the code
+2018-10-11 13:57:23,402 ca.uvic.concurrency.gmmurguia.execution.Execution.execute-jmh-worker-1 DEBUG Shutdown hook enabled. Registering a new one.
+2018-10-11 13:57:23,403 ca.uvic.concurrency.gmmurguia.execution.Execution.execute-jmh-worker-1 DEBUG LoggerContext[name=5c647e05, org.apache.logging.log4j.core.LoggerContext@6c4af7db] started OK.
+0.772 s/op
+Iteration   2: 0.779 s/op
+Iteration   3: 0.779 s/op
+Iteration   4: 0.781 s/op
+Iteration   5: 0.750 s/op
+Iteration   6: 0.786 s/op
+Iteration   7: 0.777 s/op
+Iteration   8: 0.739 s/op
+Iteration   9: 0.777 s/op
+Iteration  10: 0.789 s/op
+2018-10-11 13:57:38,879 pool-2-thread-1 DEBUG Stopping LoggerContext[name=5c647e05, org.apache.logging.log4j.core.LoggerContext@6c4af7db]
+2018-10-11 13:57:38,880 pool-2-thread-1 DEBUG Stopping LoggerContext[name=5c647e05, org.apache.logging.log4j.core.LoggerContext@6c4af7db]...
+
+# Run progress: 1.11% complete, ETA 00:24:14
+# Fork: 2 of 5
 ```
 
 In the previous excerpt it is displayed the execution of one of the forks for the Java solution, and the partial metrics obtained.
 
 ```
-Missing the code
+Result "ca.uvic.concurrency.gmmurguia.execution.Execution.execute":
+  0.707 ±(99.9%) 0.005 s/op [Average]
+  (min, avg, max) = (0.681, 0.707, 0.736), stdev = 0.011
+  CI (99.9%): [0.702, 0.713] (assumes normal distribution)
+
+
+# Run complete. Total time: 00:25:17
+
+Benchmark                                                                                                                                                                                                                             (command)  Mode  Cnt  Score   Error  Units
+Execution.execute                                                                                          java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.prodscons.ProducersConsumers false 1000  avgt   50  0.775 ± 0.008   s/op
+Execution.execute                                                                                                                                                                                      go run other_solutions/prod_cons.go 1000  avgt   50  0.183 ± 0.014   s/op
 ```
 
 This log excerpt contains the summary data for this problem.
 
 ![Missing graph][11]
 
-The previous graph represents the CPU usage per core during the execution of the Java program. 
+The previous graph represents the CPU usage per core during the execution of the Go program. 
 
 ![Missing graph][12]
 
-The previous graph represents the CPU usage per core during the execution of the C program.
+The previous graph represents the CPU usage per core during the execution of the Java program.
 
 ##### **Analysis results**
 The results are summarized in the following table:
@@ -189,7 +231,7 @@ The results are summarized in the following table:
 
 For this problem, the Go's code is clearly preferrable to the Java's code. It is easier to understand and extend, it less likely to introduce bugs and the performance is superior.
 
-#### **Readers-writers**
+#### **3. Readers-writers**
 ##### **Description**
 ```
 Readers and writers execute different code before entering the critical section. The synchronization constraints are:
@@ -472,12 +514,12 @@ Downey,  Allen B. 2014. The Little Book of Semaphores: Createspace Independent P
 [4]: https://github.com/sephiroth2029/concurrency-a1/blob/master/src/main/resources/other_solutions/barber.c
 [5]: https://github.com/sephiroth2029/concurrency-a1/blob/master/src/main/java/ca/uvic/concurrency/gmmurguia/a1/barbershop/Barbershop.java
 [6]: https://github.com/sephiroth2029/concurrency-a1/blob/master/src/main/resources/nmon_results/barbershop/c/charts/pantera/CPU_Balance.png?raw=true
-[7]: https://github.com/sephiroth2029/concurrency-a1/blob/master/src/main/resources/nmon_results/barbershop/java/charts/pantera/CPU_Balance.png?raw=true
+[7]: http://www.golangpatterns.info/concurrency/producer-consumer
 [8]: https://www.geeksforgeeks.org/producer-consumer-solution-using-threads-java/
-[9]: https://www.dreamincode.net/forums/topic/47521-barber-shop-problem/
-[10]: https://www.dreamincode.net/forums/topic/47521-barber-shop-problem/
-[11]: https://www.dreamincode.net/forums/topic/47521-barber-shop-problem/
-[12]: https://www.dreamincode.net/forums/topic/47521-barber-shop-problem/
+[9]: https://github.com/sephiroth2029/concurrency-a1/blob/master/src/main/resources/other_solutions/prod_cons.go
+[10]: https://github.com/sephiroth2029/concurrency-a1/blob/master/src/main/java/ca/uvic/concurrency/gmmurguia/a1/prodscons/ProducersConsumers.java
+[11]: https://github.com/sephiroth2029/concurrency-a1/blob/master/src/main/resources/nmon_results/prds_cons/go/charts/pantera/CPU_Balance.png?raw=true
+[12]: https://github.com/sephiroth2029/concurrency-a1/blob/master/src/main/resources/nmon_results/prds_cons/java/charts/pantera/CPU_Balance.png?raw=true
 [13]: https://medium.com/stupid-gopher-tricks/more-powerful-synchronization-in-go-using-channels-f4a1c3242ed0
 [14]: https://www.dreamincode.net/forums/topic/47521-barber-shop-problem/
 [15]: https://www.dreamincode.net/forums/topic/47521-barber-shop-problem/
@@ -497,3 +539,4 @@ Downey,  Allen B. 2014. The Little Book of Semaphores: Createspace Independent P
 [29]: https://codereview.stackexchange.com/questions/224/thread-safe-and-lock-free-queue-implementation
 [30]: https://docs.oracle.com/javase/8/docs/api/java/util/LinkedList.html
 [31]: https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentLinkedQueue.html
+[32]: https://github.com/sephiroth2029/concurrency-a1/blob/master/src/main/resources/nmon_results/barbershop/java/charts/pantera/CPU_Balance.png?raw=true
