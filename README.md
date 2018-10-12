@@ -29,6 +29,37 @@ The programs were executed in two ways:
 1. A single execution, starting nmon through a shell program and stopping it at the end of the execution.
 2. Repetitive executions, in order to obtain average times and provide a wider view of the actual performance.
 
+All programs were executed for 1000 repetitions, with the exception of the 6th which was also executed for 100 and 10000.
+
+#### **Testing environment**
+
+The tests were exeucted in an isolated workstation with the following characteristics:
+
+```
+Host bridge: Intel Corporation 2nd Generation Core Processor Family DRAM Controller (rev 09)
+	Subsystem: Dell Device 04ad
+	Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx-
+	Status: Cap+ 66MHz- UDF- FastB2B+ ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort+ >SERR- <PERR- INTx-
+	Latency: 0
+PCI bridge: Intel Corporation Xeon E3-1200/2nd Generation Core Processor Family PCI Express Root Port (rev 09) (prog-if 00 [Normal decode])
+	Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx-
+	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	Latency: 0, Cache Line Size: 64 bytes
+RAM:
+    Total Width: 64 bits
+	Data Width: 64 bits
+	Size: 2x2048 MB
+	Form Factor: DIMM
+	Set: None
+	Locator: ChannelA-DIMM1
+	Bank Locator: BANK 1
+	Type: DDR3
+```
+
+Nmon was executed with a clean system, obtaining the following results:
+
+![Missing graph][39]
+
 ### **Problems**
 
 In this section the problems will be discussed, together with the results. It is important to mention that most of the problems were analyzed differently. The detail will be explained at the beginning of each problem.
@@ -738,3 +769,4 @@ Downey,  Allen B. 2014. The Little Book of Semaphores: Createspace Independent P
 [36]: https://github.com/sephiroth2029/concurrency-a1/blob/master/src/main/resources/nmon_results/concurrent_queue_1000/java/concurrent/charts/pantera/CPU_Balance.png?raw=true
 [37]: https://github.com/sephiroth2029/concurrency-a1/blob/master/src/main/resources/nmon_results/concurrent_queue_1000/java/blocking/charts/pantera/CPU_Balance.png?raw=true
 [38]: https://github.com/sephiroth2029/concurrency-a1/blob/master/src/main/resources/nmon_results/concurrent_queue_1000/java/sync/charts/pantera/CPU_Balance.png?raw=true
+[39]: https://github.com/sephiroth2029/concurrency-a1/blob/master/src/main/resources/nmon_results/initial/charts/pantera/CPU_Balance.png?raw=true
