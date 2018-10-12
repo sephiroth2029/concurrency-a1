@@ -56,30 +56,70 @@ This problem may be seen in middle-ware components, where a large number of clie
 There is a log file with the entire contents of the test. However, due to the length of such file, it won't be uploaded to the version control repository. The relevant portions of the log are as follows:
 
 ```
-Missing the code
+2018-10-11 14:06:13,168 ca.uvic.concurrency.gmmurguia.execution.Execution.execute-jmh-worker-1 DEBUG Shutdown hook enabled. Registering a new one.
+2018-10-11 14:06:13,168 ca.uvic.concurrency.gmmurguia.execution.Execution.execute-jmh-worker-1 DEBUG LoggerContext[name=5c647e05, org.apache.logging.log4j.core.LoggerContext@6c4af7db] started OK.
+0.863 s/op
+Iteration   2: 0.841 s/op
+Iteration   3: 0.863 s/op
+Iteration   4: 0.854 s/op
+Iteration   5: 0.851 s/op
+Iteration   6: 0.859 s/op
+Iteration   7: 0.832 s/op
+Iteration   8: 0.844 s/op
+Iteration   9: 0.847 s/op
+Iteration  10: 0.871 s/op
+2018-10-11 14:06:30,241 pool-2-thread-1 DEBUG Stopping LoggerContext[name=5c647e05, org.apache.logging.log4j.core.LoggerContext@6c4af7db]
+2018-10-11 14:06:30,241 pool-2-thread-1 DEBUG Stopping LoggerContext[name=5c647e05, org.apache.logging.log4j.core.LoggerContext@6c4af7db]...
+
+
+Result "ca.uvic.concurrency.gmmurguia.execution.Execution.execute":
+  0.860 ±(99.9%) 0.010 s/op [Average]
+  (min, avg, max) = (0.832, 0.860, 0.928), stdev = 0.019
+  CI (99.9%): [0.850, 0.869] (assumes normal distribution)
+```
+
+In the previous excerpt it is displayed the execution of the final forks for the C solution, and the metrics obtained.
+
+```
+2018-10-11 14:06:31,060 ca.uvic.concurrency.gmmurguia.execution.Execution.execute-jmh-worker-1 DEBUG Shutdown hook enabled. Registering a new one.
+2018-10-11 14:06:31,060 ca.uvic.concurrency.gmmurguia.execution.Execution.execute-jmh-worker-1 DEBUG LoggerContext[name=5c647e05, org.apache.logging.log4j.core.LoggerContext@6c4af7db] started OK.
+0.951 s/op
+Iteration   2: 0.891 s/op
+Iteration   3: 0.923 s/op
+Iteration   4: 0.913 s/op
+Iteration   5: 0.927 s/op
+Iteration   6: 0.964 s/op
+Iteration   7: 0.924 s/op
+Iteration   8: 0.937 s/op
+Iteration   9: 0.934 s/op
+Iteration  10: 0.939 s/op
+2018-10-11 14:06:49,686 pool-2-thread-1 DEBUG Stopping LoggerContext[name=5c647e05, org.apache.logging.log4j.core.LoggerContext@6c4af7db]
+2018-10-11 14:06:49,687 pool-2-thread-1 DEBUG Stopping LoggerContext[name=5c647e05, org.apache.logging.log4j.core.LoggerContext@6c4af7db]...
+
+# Run progress: 40.00% complete, ETA 00:14:10
+# Fork: 2 of 5
 ```
 
 In the previous excerpt it is displayed the execution of one of the forks for the Java solution, and the partial metrics obtained.
 
 ```
-Missing the code
-```
+# Run complete. Total time: 00:25:17
 
-In the previous excerpt it is displayed the execution of one of the forks for the C solution, and the partial metrics obtained.
-
-```
-Missing the code
+Benchmark                                                                                                                                                                                                                             (command)  Mode  Cnt  Score   Error  Units
+...
+other_solutions/barber                                   avgt   50  0.860 ± 0.010   s/op
+Execution.execute                                                                                                 java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.barbershop.Barbershop false 1000  avgt   50  0.930 ± 0.008   s/op
 ```
 
 This log excerpt contains the summary data for this problem.
 
 ![Missing graph][6]
 
-The previous graph represents the CPU usage per core during the execution of the Java program. 
+The previous graph represents the CPU usage per core during the execution of the C program. 
 
-![Missing graph][6]
+![Missing graph][7]
 
-The previous graph represents the CPU usage per core during the execution of the C program.
+The previous graph represents the CPU usage per core during the execution of the Java program.
 
 ##### **Analysis results**
 The results are summarized in the following table:
@@ -429,10 +469,10 @@ Downey,  Allen B. 2014. The Little Book of Semaphores: Createspace Independent P
 [1]: http://nmon.sourceforge.net/pmwiki.php
 [2]: http://openjdk.java.net/projects/code-tools/jmh/
 [3]: https://www.dreamincode.net/forums/topic/47521-barber-shop-problem/
-[4]: https://www.dreamincode.net/forums/topic/47521-barber-shop-problem/
-[5]: https://www.dreamincode.net/forums/topic/47521-barber-shop-problem/
-[6]: https://www.dreamincode.net/forums/topic/47521-barber-shop-problem/
-[7]: http://www.golangpatterns.info/concurrency/producer-consumer
+[4]: https://github.com/sephiroth2029/concurrency-a1/blob/master/src/main/resources/other_solutions/barber.c
+[5]: https://github.com/sephiroth2029/concurrency-a1/blob/master/src/main/java/ca/uvic/concurrency/gmmurguia/a1/barbershop/Barbershop.java
+[6]: https://github.com/sephiroth2029/concurrency-a1/blob/master/src/main/resources/nmon_results/barbershop/c/charts/pantera/CPU_Balance.png?raw=true
+[7]: https://github.com/sephiroth2029/concurrency-a1/blob/master/src/main/resources/nmon_results/barbershop/java/charts/pantera/CPU_Balance.png?raw=true
 [8]: https://www.geeksforgeeks.org/producer-consumer-solution-using-threads-java/
 [9]: https://www.dreamincode.net/forums/topic/47521-barber-shop-problem/
 [10]: https://www.dreamincode.net/forums/topic/47521-barber-shop-problem/
