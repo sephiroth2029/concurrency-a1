@@ -432,30 +432,72 @@ This could be used in the context of data science libraries, as it is desirable 
 The relevant portions of the log are as follows:
 
 ```
-Missing the code
+2018-10-11 14:01:59,579 ca.uvic.concurrency.gmmurguia.execution.Execution.execute-jmh-worker-1 DEBUG Shutdown hook enabled. Registering a new one.
+2018-10-11 14:01:59,580 ca.uvic.concurrency.gmmurguia.execution.Execution.execute-jmh-worker-1 DEBUG LoggerContext[name=5c647e05, org.apache.logging.log4j.core.LoggerContext@6c4af7db] started OK.
+0.879 s/op
+Iteration   2: 0.849 s/op
+Iteration   3: 0.912 s/op
+Iteration   4: 0.859 s/op
+Iteration   5: 0.857 s/op
+Iteration   6: 0.861 s/op
+Iteration   7: 0.858 s/op
+Iteration   8: 0.886 s/op
+Iteration   9: 0.840 s/op
+Iteration  10: 0.861 s/op
+2018-10-11 14:02:16,925 pool-2-thread-1 DEBUG Stopping LoggerContext[name=5c647e05, org.apache.logging.log4j.core.LoggerContext@6c4af7db]
+2018-10-11 14:02:16,925 pool-2-thread-1 DEBUG Stopping LoggerContext[name=5c647e05, org.apache.logging.log4j.core.LoggerContext@6c4af7db]...
+
+# Run progress: 23.33% complete, ETA 00:16:07
+# Fork: 2 of 5
 ```
 
-In the previous excerpt it is displayed the execution of one of the forks for the C solution, and the partial metrics obtained.
+In the previous excerpt it is displayed the execution of one of the forks for the non-starving solution, and the partial metrics obtained.
 
 ```
-Missing the code
+2018-10-11 14:03:30,635 ca.uvic.concurrency.gmmurguia.execution.Execution.execute-jmh-worker-1 DEBUG Shutdown hook enabled. Registering a new one.
+2018-10-11 14:03:30,635 ca.uvic.concurrency.gmmurguia.execution.Execution.execute-jmh-worker-1 DEBUG LoggerContext[name=5c647e05, org.apache.logging.log4j.core.LoggerContext@6c4af7db] started OK.
+0.826 s/op
+Iteration   2: 0.852 s/op
+Iteration   3: 0.854 s/op
+Iteration   4: 0.894 s/op
+Iteration   5: 0.878 s/op
+Iteration   6: 0.841 s/op
+Iteration   7: 0.885 s/op
+Iteration   8: 0.891 s/op
+Iteration   9: 0.824 s/op
+Iteration  10: 0.840 s/op
+2018-10-11 14:03:47,826 pool-2-thread-1 DEBUG Stopping LoggerContext[name=5c647e05, org.apache.logging.log4j.core.LoggerContext@6c4af7db]
+2018-10-11 14:03:47,827 pool-2-thread-1 DEBUG Stopping LoggerContext[name=5c647e05, org.apache.logging.log4j.core.LoggerContext@6c4af7db]...
+
+# Run progress: 28.89% complete, ETA 00:15:48
+# Fork: 2 of 5
 ```
 
-In the previous excerpt it is displayed the execution of one of the forks for the Java solution, and the partial metrics obtained.
+In the previous excerpt it is displayed the execution of one of the forks for the solution with starvation, and the partial metrics obtained.
 
 ```
-Missing the code
+Result "ca.uvic.concurrency.gmmurguia.execution.Execution.execute":
+  0.707 ±(99.9%) 0.005 s/op [Average]
+  (min, avg, max) = (0.681, 0.707, 0.736), stdev = 0.011
+  CI (99.9%): [0.702, 0.713] (assumes normal distribution)
+
+
+# Run complete. Total time: 00:25:17
+
+Benchmark                                                                                                                                                                                                                             (command)  Mode  Cnt  Score   Error  Units
+Execution.execute                                                                                         java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.unisexbathroom.UnisexBathroom false 1000  avgt   50  0.868 ± 0.011   s/op
+Execution.execute                                                                                 java -cp assignment1-1.0-SNAPSHOT-jar-with-dependencies.jar ca.uvic.concurrency.gmmurguia.a1.unisexbathroom.UnisexBathroomStarving false 1000  avgt   50  0.860 ± 0.010   s/op
 ```
 
 This log excerpt contains the summary data for this problem.
 
 ![Missing graph][27]
 
-The previous graph represents the CPU usage per core during the execution of the C program. 
+The previous graph represents the CPU usage per core during the execution of the non-starving program. 
 
 ![Missing graph][28]
 
-The previous graph represents the CPU usage per core during the execution of the Java program.
+The previous graph represents the CPU usage per core during the execution of the starving program.
 
 ##### **Analysis results**
 The results are summarized in the following table:
@@ -465,7 +507,7 @@ The results are summarized in the following table:
 | Starvation | Starvation is the biggest problem for this code. I was trivial to find an scenario where a single group gained control of the critial section and prevented the other group from entering. The major problem is that even if the critial section is almost empty, the entrance of a new element of the same group regains control of it. | The code is not trivial and it takes some effort to understand the reasoning behind the synchronization blocks introduced. It is not a clean solution and it is less readable because of the fact that threads in the wait state may me waken up by the scheduler even if the timing is not right, thus having to write extra code to handle this particular case. | The Go code was faster for about... |
 | No starvation | The code was thoroughly tested and bugs were attended. The program was executed with randomized waits and creation of male and female groups without displaying signs of race conditions or deadlocks. | The code is more complex than the solution where starvation is allowed, since extra mechanisms to ensure that both groups were allowed to enter the critical section. Also, it became difficult to ensure high cohesion as the synchronized blocks require from a common lock. | TheThe Go code was faster for about... |
 
-#### **Concurrent Queue**
+#### **6. Concurrent Queue**
 ##### **Description**
 Queues are data structures where the first element added (enqueued) should be the first to be removed (dequeued). When multiple threads share a Queue it is important to implement a mechanism which allows consistent operations. For this problem, two strategies to achieve this goal will be analysed: lock-free operations, which optimistically assume that no other thread affected the queue but still compare the state at the end to ensure consistency; and locking operations, which rely on synchonized methods and blocks.
 
@@ -580,9 +622,9 @@ Downey,  Allen B. 2014. The Little Book of Semaphores: Createspace Independent P
 [23]: http://www.connectivelogic.co.uk/santa.asp
 [24]: https://github.com/sephiroth2029/concurrency-a1/blob/master/src/main/resources/nmon_results/santa/c/charts/pantera/CPU_Balance.png?raw=true
 [25]: http://www.connectivelogic.co.uk/santa.asp
-[26]: http://www.connectivelogic.co.uk/santa.asp
-[27]: http://www.connectivelogic.co.uk/santa.asp
-[28]: http://www.connectivelogic.co.uk/santa.asp
+[26]: https://github.com/sephiroth2029/concurrency-a1/tree/master/src/main/java/ca/uvic/concurrency/gmmurguia/a1/unisexbathroom
+[27]: https://github.com/sephiroth2029/concurrency-a1/blob/master/src/main/resources/nmon_results/unisex_bathroom/java/UnisexBathroom/charts/pantera/CPU_Balance.png?raw=true
+[28]: https://github.com/sephiroth2029/concurrency-a1/blob/master/src/main/resources/nmon_results/unisex_bathroom/java/Starving/charts/pantera/CPU_Balance.png?raw=true
 [29]: https://codereview.stackexchange.com/questions/224/thread-safe-and-lock-free-queue-implementation
 [30]: https://docs.oracle.com/javase/8/docs/api/java/util/LinkedList.html
 [31]: https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentLinkedQueue.html
