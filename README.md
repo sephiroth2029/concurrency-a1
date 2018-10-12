@@ -369,30 +369,31 @@ This is a very particular problem, as the description is modestly simple but the
 The relevant portions of the log are as follows:
 
 ```
-Missing the code
+2018-10-11 18:34:17,685 main DEBUG Shutdown hook enabled. Registering a new one.
+2018-10-11 18:34:17,686 main DEBUG LoggerContext[name=5c647e05, org.apache.logging.log4j.core.LoggerContext@7b9a4292] started OK.
+# JMH version: 1.19
+# VM version: JDK 1.8.0_181, VM 25.181-b13
+# VM invoker: /usr/java/jdk1.8.0_181-amd64/jre/bin/java
+# VM options: <none>
+# Warmup: <none>
+# Measurement: 10 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: ca.uvic.concurrency.gmmurguia.execution.Execution.execute
+# Parameters: (command = other_solutions/Santa-Claus-Problem/mrs.claus 100 1000 10)
+
+# Run progress: 0.00% complete, ETA 00:00:50
+# Fork: 1 of 5
 ```
 
-In the previous excerpt it is displayed the execution of one of the forks for the C solution, and the partial metrics obtained.
-
-```
-Missing the code
-```
-
-In the previous excerpt it is displayed the execution of one of the forks for the Java solution, and the partial metrics obtained.
-
-```
-Missing the code
-```
-
-This log excerpt contains the summary data for this problem.
+In the previous excerpt it is displayed the execution of first of the forks for the C solution.
 
 ![Missing graph][24]
 
 The previous graph represents the CPU usage per core during the execution of the C program. 
 
-![Missing graph][25]
-
-The previous graph represents the CPU usage per core during the execution of the Java program.
+Unfortunately the Java program is currently under a deadlock, which prevents the comparison and dispay of raw results.
 
 ##### **Analysis results**
 The results are summarized in the following table:
@@ -404,7 +405,7 @@ The results are summarized in the following table:
 
 It would be very enlightening to review more solutions for this program, as the problems underlying the simple description are complex and require of careful thought.
 
-#### **Unisex bathroom**
+#### **5. Unisex bathroom**
 ##### **Description**
 ```
 There cannot be men and women in the bathroom at the same time.
@@ -572,12 +573,12 @@ Downey,  Allen B. 2014. The Little Book of Semaphores: Createspace Independent P
 [16]: https://github.com/sephiroth2029/concurrency-a1/blob/master/src/main/resources/nmon_results/readers_writers/go/charts/pantera/CPU_Balance.png?raw=true
 [17]: https://github.com/sephiroth2029/concurrency-a1/blob/master/src/main/resources/nmon_results/readers_writers/java/charts/pantera/CPU_Balance.png?raw=true
 [18]: https://github.com/affansheikh95/Santa-Claus-Problem
-[19]: https://www.dreamincode.net/forums/topic/47521-barber-shop-problem/
-[20]: https://www.dreamincode.net/forums/topic/47521-barber-shop-problem/
+[19]: https://github.com/sephiroth2029/concurrency-a1/tree/master/src/main/resources/other_solutions/santaClaus
+[20]: https://github.com/sephiroth2029/concurrency-a1/tree/master/src/main/java/ca/uvic/concurrency/gmmurguia/a1/santaclaus
 [21]: https://pdfs.semanticscholar.org/575b/d506b6531db2133eb50f9256d235f788ea81.pdf
 [22]: https://www.schoolofhaskell.com/school/advanced-haskell/beautiful-concurrency/4-the-santa-claus-problem
 [23]: http://www.connectivelogic.co.uk/santa.asp
-[24]: http://www.connectivelogic.co.uk/santa.asp
+[24]: https://github.com/sephiroth2029/concurrency-a1/blob/master/src/main/resources/nmon_results/santa/c/charts/pantera/CPU_Balance.png?raw=true
 [25]: http://www.connectivelogic.co.uk/santa.asp
 [26]: http://www.connectivelogic.co.uk/santa.asp
 [27]: http://www.connectivelogic.co.uk/santa.asp
